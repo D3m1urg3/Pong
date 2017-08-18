@@ -1,12 +1,9 @@
 // Pong Clon - Yonatan Calderon 2017
 
-#include <iostream>
-#include <windows.h>
+#include "graphics.h"
+#include "globals.h"
 
-#include "SDL.h"
-#undef main // SDL defines a main for some reason
-
-#define MS_PER_FRAME 33
+#define MS_PER_FRAME 33 // 30 fps
 
 void input();
 void update();
@@ -16,6 +13,10 @@ void sleep(long ms);
 
 int main()
 {
+    // Init
+    // ...
+
+    // Game loop
     while (true)
     {
         long start_time = get_current_time();
@@ -28,24 +29,19 @@ int main()
     return 0;
 }
 
-// Loop Methods
+// Game loop functions 
 void input()
 {
-    std::cout << "Input ..." << std::endl;
 }
 
 void update()
 {
-    std::cout << "Update ..." << std::endl;
 }
 
 void render()
 {
-    std::cout << "Render ..." << std::endl;
-    system("CLS");
 }
 
-// Utils
 long get_current_time()
 {
     SYSTEMTIME time;
