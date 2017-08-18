@@ -3,6 +3,9 @@
 #include <iostream>
 #include <windows.h>
 
+#include "SDL.h"
+#undef main // SDL defines a main for some reason
+
 #define MS_PER_FRAME 33
 
 void input();
