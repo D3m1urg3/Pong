@@ -1,6 +1,6 @@
 // Pong Clon - Yonatan Calderon 2017
 
-#include "graphics.h"
+#include "game.h"
 #include "globals.h"
 
 #define MS_PER_FRAME 33 // 30 fps
@@ -14,7 +14,7 @@ void sleep(long ms);
 int main()
 {
     // Init
-    // ...
+    Game game;
 
     // Game loop
     while (true)
@@ -25,6 +25,8 @@ int main()
         render();
         sleep(start_time + MS_PER_FRAME - get_current_time());
     }
+
+    // Clean
 
     return 0;
 }

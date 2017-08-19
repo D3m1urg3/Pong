@@ -11,7 +11,7 @@ class Texture
 {
 public:
     Texture();
-    Texture(char* fullfilename);
+    Texture(const char* fullfilename);
     ~Texture();
 
     inline bool         is_loaded() const { return loaded; }
@@ -26,14 +26,19 @@ private:
     void clean();
 };
 
+class Renderer;
+
 class Sprite
 {
 public:
+    Sprite(Texture* spritesheet_, int src_x, int src_y, int src_wx, int src_wy);
+    ~Sprite();
     void                set_src_rect(int x, int y, int wx, int wy);
     void                set_dst_rect(int x, int y, int wx, int wy);
     inline SDL_Rect*    get_src_rect() const { return src; }
     inline SDL_Rect*    get_dst_rect() const { return dst; }
     Texture*            get_spritesheet() const { return spritesheet; }
+    void                draw(Renderer* render);
 private:
     Texture* spritesheet;
     SDL_Rect* src;
