@@ -18,9 +18,9 @@ protected:
 class Ball : public Entity
 {
 public:
-    Ball(Texture* spritesheet, int x_, int  y_, int  w_, int  h_);
+    Ball(Texture* spritesheet, uint x_, uint  y_, uint  w_, uint  h_);
     ~Ball();
-    void draw(Renderer* render);
+    void draw(Renderer* render, uint x, uint y);
 private:
     static const int sprt_x;
     static const int sprt_y;

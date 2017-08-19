@@ -15,9 +15,11 @@ int main()
 {
     // Init
     Game game;
+    game.draw_background();
+    game.draw_ball();
 
     // Game loop
-    while (true)
+    while (false)
     {
         long start_time = get_current_time();
         input();
