@@ -35,7 +35,5 @@ class Number : public Entity
 public:
     Number(uint x_, uint  y_);
     ~Number();
-private:
-    Sprite* sprite;
 };
 #endif

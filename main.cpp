@@ -15,7 +15,6 @@ int main()
 {
     // Init
     Game game;
-    game.draw_background();
 
     // Game loop
     while (false)
