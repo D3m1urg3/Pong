@@ -37,6 +37,8 @@ public:
     void                set_dst_rect(int x, int y, int wx, int wy);
     inline SDL_Rect*    get_src_rect() const { return src; }
     inline SDL_Rect*    get_dst_rect() const { return dst; }
+    uint get_sprite_width() const;
+    uint get_sprite_height() const;
     Texture*            get_spritesheet() const { return spritesheet; }
     void                draw(Renderer* render);
 private:

@@ -107,6 +107,18 @@ void Sprite::set_dst_rect(int x, int y, int wx, int wy)
     dst = new SDL_Rect{ x, y, wx, wy }; 
 }
 
+uint Sprite::get_sprite_width() const
+{
+    SDL_Rect* r = get_src_rect();
+    return r->w;
+}
+
+uint Sprite::get_sprite_height() const
+{
+    SDL_Rect* r = get_src_rect();
+    return r->h;
+}
+
 void Sprite::draw(Renderer* render)
 {
     if (render != nullptr)

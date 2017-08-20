@@ -6,27 +6,36 @@
 class Entity 
 {
 public:
-    Entity(int x_, int  y_, int  w_, int  h_):x(x_), y(y_), w(w_), h(h_){}
-    virtual ~Entity() {}
+    Entity(uint x_, uint  y_);
+    virtual ~Entity();
+    void extract_sprite(Texture* spritesheet, uint s_x, uint s_y, uint s_w, uint s_h);
+    void draw(Renderer* render, uint x, uint y);
 protected:
     double x;
     double y;
-    double w;
-    double h;
+    Sprite* sprite;
 };
 
 class Ball : public Entity
 {
 public:
-    Ball(Texture* spritesheet, uint x_, uint  y_, uint  w_, uint  h_);
+    Ball(uint x_, uint  y_);
     ~Ball();
-    void draw(Renderer* render, uint x, uint y);
-private:
-    static const int sprt_x;
-    static const int sprt_y;
-    static const int sprt_w;
-    static const int sprt_h;
-    Sprite* sprite;
 };
 
+class Paddle : public Entity
+{
+public:
+    Paddle(uint x_, uint  y_);
+    ~Paddle();
+};
+
+class Number : public Entity
+{
+public:
+    Number(uint x_, uint  y_);
+    ~Number();
+private:
+    Sprite* sprite;
+};
 #endif
