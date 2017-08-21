@@ -1,15 +1,33 @@
 #include "entities.h"
 
 // Entity
-Entity::Entity(uint x_, uint  y_)
-    :x(x_),
-    y(y_),
-    sprite(nullptr)
+Entity::Entity(uint x, uint  y)
+    :_x(x),
+    _y(y),
+    sprite(nullptr),
+    collider(nullptr),
+    body(nullptr)
 {}
 
 Entity::~Entity()
 {
     delete sprite;
+    delete collider;
+    delete body;
+}
+
+void Entity::set_position(uint x, uint y)
+{
+    _x = x; 
+    _y = y;
+    if (collider != nullptr)
+    {
+        collider->set_position(x, y);
+    }
+    if (body != nullptr)
+    {
+        body->set_position(x, y);
+    }
 }
 
 void Entity::extract_sprite(Texture* spritesheet, uint s_x, uint s_y, uint s_w, uint s_h)
@@ -18,6 +36,21 @@ void Entity::extract_sprite(Texture* spritesheet, uint s_x, uint s_y, uint s_w, 
     {
         sprite = new Sprite(spritesheet, s_x, s_y, s_w, s_h);
     }
+}
+
+void Entity::attach_collider(uint x, uint y, uint w, uint h)
+{
+    delete collider;
+    collider = nullptr;
+    collider = new Box_collider(x, y, w, h);
+}
+
+void Entity::attach_body(uint x, uint y, uint w, uint h)
+{
+    delete body;
+    body = nullptr;
+    body = new Body();
+    body->set_position(x + w / 2, y + h / 2); // Center of gravity of entity
 }
 
 void Entity::draw(Renderer* render, uint x, uint y)
@@ -29,47 +62,19 @@ void Entity::draw(Renderer* render, uint x, uint y)
     }
 }
 
-// Ball
-/*
-const int Ball::sprt_x = 73;    //pixels
-const int Ball::sprt_y = 104;   //pixels
-const int Ball::sprt_w = 4;     //pixels
-const int Ball::sprt_h = 4;     //pixels
-*/
-
-Ball::Ball(uint x_, uint  y_)
-    :Entity(x_, y_)
+void Entity::draw(Renderer* render)
 {
+    if (sprite != nullptr)
+    {
+        sprite->set_dst_rect(_x, _y, sprite->get_sprite_width(), sprite->get_sprite_height());
+        sprite->draw(render);
+    }
 }
 
-Ball::~Ball()
+void Entity::move()
 {
-}
-
-
-// Paddle
-/*
-const int Paddle::sprt_x = 29;    //pixels
-const int Paddle::sprt_y = 94;    //pixels
-const int Paddle::sprt_w = 4;     //pixels
-const int Paddle::sprt_h = 14;    //pixels
-*/
-
-Paddle::Paddle(uint x_, uint  y_)
-    :Entity(x_, y_)
-{
-}
-
-Paddle::~Paddle()
-{
-}
-
-// Number
-Number::Number(uint x_, uint  y_)
-    :Entity(x_, y_)
-{
-}
-
-Number::~Number()
-{
+    if (body != nullptr)
+    {
+        body->move(_x, _y);
+    }
 }

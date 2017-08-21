@@ -14,8 +14,16 @@ Box_collider::~Box_collider()
     delete rect;
 }
 
-bool Box_collider::is_colliding_with(SDL_Rect* other)
+bool Box_collider::is_colliding_with(Box_collider* other)
 {
-    SDL_Rect intersection;
-    return SDL_IntersectRect(rect, other, &intersection);
+    if (other != nullptr)
+    {
+        SDL_Rect* other_rect = other->get_rect();
+        if (other_rect != nullptr)
+        {
+            SDL_Rect* intersection = nullptr;
+            return SDL_IntersectRect(rect, other_rect, intersection);
+        }
+    }
+    return false;
 }

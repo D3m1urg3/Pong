@@ -38,6 +38,10 @@ Controls Input::check_for_input()
                 controls = NONE;
                 break;
             }
+            break;
+        case SDL_KEYUP:
+            controls = NONE;
+            break;
         }
     }
     return controls;

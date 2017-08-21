@@ -143,13 +143,13 @@ Renderer::Renderer(const char* title, uint screen_x, uint screen_y, uint size_x,
 
 Renderer::~Renderer()
 {
-    clean();
-}
-
-void Renderer::clean()
-{
     SDL_DestroyWindow(window);
     SDL_Quit();
+}
+
+void Renderer::clear_screen()
+{
+    SDL_FillRect(screen, NULL, 0x000000);
 }
 
 void Renderer::draw(Sprite* sprite)

@@ -5,9 +5,6 @@
 
 #define MS_PER_FRAME 33 // 30 fps
 
-void input();
-void update();
-void render();
 long get_current_time();
 void sleep(long ms);
 
@@ -17,16 +14,15 @@ int main()
     Game game;
 
     // Game loop
-    while (false)
+    if (game.init_ok())
     {
-        long start_time = get_current_time();
-        input();
-        update();
-        render();
-        sleep(start_time + MS_PER_FRAME - get_current_time());
+        while (game.get_state() != FINISHED)
+        {
+            long start_time = get_current_time();
+            game.update();
+            sleep(start_time + MS_PER_FRAME - get_current_time());
+        }
     }
-
-    // Clean
 
     return 0;
 }

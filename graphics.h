@@ -54,10 +54,10 @@ public:
     ~Renderer();
 
     void draw(Sprite* sprite);
+    void clear_screen();
 private:
     SDL_Window* window;
     SDL_Surface* screen;
 
-    void clean();
 };
 #endif
