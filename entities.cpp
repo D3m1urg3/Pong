@@ -38,11 +38,18 @@ void Entity::extract_sprite(Texture* spritesheet, uint s_x, uint s_y, uint s_w, 
     }
 }
 
-void Entity::attach_collider(uint x, uint y, uint w, uint h)
+void Entity::attach_box_collider(uint x, uint y, uint w, uint h)
 {
     delete collider;
     collider = nullptr;
     collider = new Box_collider(x, y, w, h);
+}
+
+void Entity::attach_edge_collider(const Edge_position& pos, uint scene_w, uint scene_h)
+{
+    delete collider;
+    collider = nullptr;
+    collider = new Edge_collider(pos, scene_w, scene_h);
 }
 
 void Entity::attach_body(uint x, uint y, uint w, uint h)
@@ -76,5 +83,9 @@ void Entity::move()
     if (body != nullptr)
     {
         body->move(_x, _y);
+        if (collider != nullptr)
+        {
+            collider->set_position(_x, _y);
+        }
     }
 }

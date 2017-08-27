@@ -21,6 +21,8 @@ const int paddle_velocity_x = 0;   //pixels/update
 const int paddle_velocity_y = 4;   //pixels/update
 const uint player_init_x = 4;
 const uint player_init_y = (SCREEN_HEIGHT-paddle_sprite_h)/2;
+const uint opponent_init_x = SCREEN_WIDTH - 4;
+const uint opponent_init_y = player_init_y;
 
 const char spritesheet_fullfilename[] = "Resources/sprites.bmp";
 
@@ -52,6 +54,10 @@ private:
     Ball* ball;
     Paddle* player;
     Paddle* opponent;
+    Entity* edge_top;
+    Entity* edge_bottom;
+    Entity* edge_left;
+    Entity* edge_right;
 
     void update_entities();
     void draw();

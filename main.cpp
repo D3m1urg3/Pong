@@ -21,6 +21,7 @@ int main()
             long start_time = get_current_time();
             game.update();
             sleep(start_time + MS_PER_FRAME - get_current_time());
+            // sleep(500);
         }
     }
 
