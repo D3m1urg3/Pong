@@ -114,6 +114,7 @@ void Game::update_entities()
     // ... AI
 
     // update ball
+    ball->move();
     int ball_vel_x = ball->body->get_velocity_x();
     int ball_vel_y = ball->body->get_velocity_y();
     if (ball->collider->is_colliding_with(player->collider) || ball->collider->is_colliding_with(opponent->collider) )
@@ -132,7 +133,6 @@ void Game::update_entities()
     {
         ball->body->set_velocity(-1 * ball_vel_x, ball_vel_y);
     }
-    ball->move();
 }
 
 void Game::draw()

@@ -26,8 +26,9 @@ bool Box_collider::is_colliding_with(Collider* other)
             SDL_Rect* other_rect = other_box->get_rect();
             if (other_rect != nullptr)
             {
-                SDL_Rect* intersection = nullptr;
-                return SDL_IntersectRect(rect, other_rect, intersection);
+                SDL_Rect intersection;
+                bool retval = SDL_IntersectRect(rect, other_rect, &intersection);
+                return retval;
             }
         }
         else if (other->get_type() == EDGE)
