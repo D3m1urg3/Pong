@@ -6,17 +6,18 @@
 #include "entities.h"
 #include "globals.h"
 
+
 #define SCREEN_WIDTH 192 // pixels
 #define SCREEN_HEIGHT 242 // pixels
 
-const uint ball_init_x     = 50;      //pixels
-const uint ball_init_y     = 50;      //pixels
-const uint ball_init_vel_x = 3;       //pixels/update
-const uint ball_init_vel_y = 1;       //pixels/update
-const uint ball_sprite_x   = 73;      //pixels
-const uint ball_sprite_y   = 104;     //pixels
-const uint ball_sprite_w   = 4;       //pixels
-const uint ball_sprite_h   = 4;       //pixels
+const uint ball_init_x     = SCREEN_WIDTH/2;  //pixels
+const uint ball_init_y     = SCREEN_HEIGHT/2; //pixels
+const uint ball_init_vel_x = 3;               //pixels/update
+const uint ball_init_vel_y = 1;               //pixels/update
+const uint ball_sprite_x   = 73;              //pixels
+const uint ball_sprite_y   = 104;             //pixels
+const uint ball_sprite_w   = 4;               //pixels
+const uint ball_sprite_h   = 4;               //pixels
 const uint paddle_sprite_x  = 29;    //pixels
 const uint paddle_sprite_y  = 94;    //pixels
 const uint paddle_sprite_w  = 4;     //pixels

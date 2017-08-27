@@ -124,6 +124,7 @@
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="entities.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="globals.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />

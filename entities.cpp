@@ -152,9 +152,10 @@ AI::AI(Body* body, Entity* ball)
 void AI::act()
 {
     bool do_something = (rand() % 100 <= 20);
+    int ball_position_error = rand() % 4 - 2;
     if (do_something && ball != nullptr && mybody != nullptr)
     {
-        uint ball_y = ball->get_y();
+        int ball_y = ball->get_y() + ball_position_error;
         if (ball_y < mybody->get_y())
         {
             mybody->set_velocity(0, -4);

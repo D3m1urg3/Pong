@@ -9,4 +9,6 @@
 
 typedef unsigned int uint;
 
+int random_sign();
+
 #endif

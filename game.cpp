@@ -140,6 +140,7 @@ void Game::update_entities()
     {
         player_scoreboard->raise();
         ball->set_position(ball_init_x, ball_init_y);
+        ball->body->set_velocity( random_sign() * ball_init_vel_x, random_sign() * ball_init_vel_y );
     }
 }
 
