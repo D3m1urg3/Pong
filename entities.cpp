@@ -89,3 +89,44 @@ void Entity::move()
         }
     }
 }
+
+// Scoreboard
+Scoreboard::Scoreboard(Texture* spritesheet, uint x, uint y)
+    :score(0)
+{
+    SDL_Rect numbers_specs[10] =
+    {   // {x,y,w,h}
+        {4, 3, 16, 32},   //0
+        {23, 3, 4, 32},   //1
+        {30, 3, 16, 32},  //2
+        {49, 3, 16, 32},  //3
+        {68, 3, 16, 32},  //4
+        {87, 3, 16, 32},  //5
+        {106, 3, 16, 32}, //6
+        {125, 3, 16, 32}, //7
+        {144, 3, 16, 32}, //8
+        {163, 3, 16, 32}, //9
+    };
+
+    for (int i = 0; i < 10; ++i)
+    {
+        numbers[i] = new Entity(x, y);
+        numbers[i]->extract_sprite(spritesheet, numbers_specs[i].x, numbers_specs[i].y, numbers_specs[i].w, numbers_specs[i].h);
+    }
+}
+
+Scoreboard::~Scoreboard()
+{
+    for (int i = 0; i < 10; ++i)
+    {
+        delete numbers[i];
+    }
+}
+
+void Scoreboard::draw(Renderer* render)
+{
+    if (score < 10)
+    {
+        numbers[score]->draw(render);
+    }
+}

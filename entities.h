@@ -4,6 +4,7 @@
 #include "graphics.h"
 #include "physics.h"
 #include "collision.h"
+#include <vector>
 
 class Entity 
 {
@@ -24,31 +25,23 @@ public:
     virtual void attach_body(uint x, uint y, uint w, uint h);
     virtual void move();
     // Render
-    void draw(Renderer* render, uint x, uint y);
     void draw(Renderer* render);
+    void draw(Renderer* render, uint x, uint y);
 protected:
     uint _x;
     uint _y;
 };
 
-class Ball : public Entity
+class Scoreboard
 {
 public:
-    Ball(uint x_, uint  y_) :Entity(x_, y_) {}
-    ~Ball() {}
-};
-
-class Paddle : public Entity
-{
-public:
-    Paddle(uint x_, uint  y_) :Entity(x_, y_) {}
-    ~Paddle() {}
-};
-
-class Number : public Entity
-{
-public:
-    Number(uint x_, uint  y_) :Entity(x_, y_) {}
-    ~Number() {}
+    Scoreboard(Texture* spritesheet, uint x, uint y);
+    ~Scoreboard();
+    
+    inline void raise() { ++score; }
+    void draw(Renderer* render);
+private:
+    uint score;
+    Entity* numbers[10];
 };
 #endif

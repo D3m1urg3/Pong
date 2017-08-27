@@ -9,14 +9,18 @@
 #define SCREEN_WIDTH 192 // pixels
 #define SCREEN_HEIGHT 242 // pixels
 
-const uint ball_sprite_x = 73;      //pixels
-const uint ball_sprite_y = 104;     //pixels
-const uint ball_sprite_w = 4;       //pixels
-const uint ball_sprite_h = 4;       //pixels
-const uint paddle_sprite_x = 29;    //pixels
-const uint paddle_sprite_y = 94;    //pixels
-const uint paddle_sprite_w = 4;     //pixels
-const uint paddle_sprite_h = 14;    //pixels
+const uint ball_init_x     = 50;      //pixels
+const uint ball_init_y     = 50;      //pixels
+const uint ball_init_vel_x = 3;      //pixels/update
+const uint ball_init_vel_y = 1;      //pixels/update
+const uint ball_sprite_x   = 73;      //pixels
+const uint ball_sprite_y   = 104;     //pixels
+const uint ball_sprite_w   = 4;       //pixels
+const uint ball_sprite_h   = 4;       //pixels
+const uint paddle_sprite_x  = 29;    //pixels
+const uint paddle_sprite_y  = 94;    //pixels
+const uint paddle_sprite_w  = 4;     //pixels
+const uint paddle_sprite_h  = 14;    //pixels
 const int paddle_velocity_x = 0;   //pixels/update
 const int paddle_velocity_y = 4;   //pixels/update
 const uint player_init_x = 4;
@@ -51,13 +55,15 @@ private:
     Texture* spritesheet;
     Sprite* background;
     Sprite* middle_line;
-    Ball* ball;
-    Paddle* player;
-    Paddle* opponent;
+    Entity* ball;
+    Entity* player;
+    Entity* opponent;
     Entity* edge_top;
     Entity* edge_bottom;
     Entity* edge_left;
     Entity* edge_right;
+    Scoreboard* player_scoreboard;
+    Scoreboard* opponent_scoreboard;
 
     void update_entities();
     void draw();

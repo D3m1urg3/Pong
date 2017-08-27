@@ -18,10 +18,10 @@ int main()
     {
         while (game.get_state() != FINISHED)
         {
-            // long start_time = get_current_time();
+            long start_time = get_current_time();
             game.update();
-            // sleep(start_time + MS_PER_FRAME - get_current_time());
-            sleep(100);
+            sleep(start_time + MS_PER_FRAME - get_current_time());
+            // sleep(100);
         }
     }
 

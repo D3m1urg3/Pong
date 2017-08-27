@@ -13,21 +13,23 @@ Game::Game()
     middle_line = new Sprite(spritesheet, 186, 0, 1, SCREEN_HEIGHT);
     middle_line->set_dst_rect(96, 0, 1, SCREEN_HEIGHT);
     // Ball
-    ball = new Ball(50, 50);
+    ball = new Entity(ball_init_x, ball_init_y);
     ball->extract_sprite(spritesheet, ball_sprite_x, ball_sprite_y, ball_sprite_w, ball_sprite_h);
-    ball->attach_body(50, 50, ball_sprite_w, ball_sprite_h);
-    ball->attach_box_collider(50, 50, ball_sprite_w, ball_sprite_h);
-    ball->body->set_velocity(3, 1);
+    ball->attach_body(ball_init_x, ball_init_y, ball_sprite_w, ball_sprite_h);
+    ball->attach_box_collider(ball_init_x, ball_init_y, ball_sprite_w, ball_sprite_h);
+    ball->body->set_velocity(ball_init_vel_x, ball_init_vel_y);
     // Player
-    player = new Paddle(player_init_x, player_init_y);
+    player = new Entity(player_init_x, player_init_y);
     player->extract_sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h);
     player->attach_body(player_init_x, player_init_y, paddle_sprite_w, paddle_sprite_h);
     player->attach_box_collider(player_init_x, player_init_y, paddle_sprite_w, paddle_sprite_h);
+    player_scoreboard = new Scoreboard(spritesheet, 10, 10);
     // Opponent
-    opponent = new Paddle(opponent_init_x, opponent_init_y);
+    opponent = new Entity(opponent_init_x, opponent_init_y);
     opponent->extract_sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h);
     opponent->attach_body(opponent_init_x, opponent_init_y, paddle_sprite_w, paddle_sprite_h);
     opponent->attach_box_collider(opponent_init_x, opponent_init_y, paddle_sprite_w, paddle_sprite_h);
+    opponent_scoreboard = new Scoreboard(spritesheet, SCREEN_WIDTH - 26, 10); // 26 = 10 (margin) + 16 (tipical number size) 
     // Edges
     edge_top = new Entity(0, 0);
     edge_top->attach_edge_collider(TOP, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -51,6 +53,8 @@ Game::~Game()
     delete ball;
     delete player;
     delete opponent;
+    delete player_scoreboard;
+    delete opponent_scoreboard;
 }
 
 bool Game::init_ok()
@@ -127,11 +131,13 @@ void Game::update_entities()
     }
     else if (ball->collider->is_colliding_with(edge_left->collider))
     {
-        ball->body->set_velocity(-1 * ball_vel_x, ball_vel_y);
+        opponent_scoreboard->raise();
+        ball->set_position(ball_init_x, ball_init_y);
     }
     else if (ball->collider->is_colliding_with(edge_right->collider))
     {
-        ball->body->set_velocity(-1 * ball_vel_x, ball_vel_y);
+        player_scoreboard->raise();
+        ball->set_position(ball_init_x, ball_init_y);
     }
 }
 
@@ -141,6 +147,8 @@ void Game::draw()
     background->draw(render);
     middle_line->draw(render);
     player->draw(render);
+    player_scoreboard->draw(render);
     opponent->draw(render);
+    opponent_scoreboard->draw(render);
     ball->draw(render);
 }
