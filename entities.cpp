@@ -6,7 +6,8 @@ Entity::Entity(uint x, uint  y)
     _y(y),
     sprite(nullptr),
     collider(nullptr),
-    body(nullptr)
+    body(nullptr),
+    mind(nullptr)
 {}
 
 Entity::~Entity()
@@ -14,6 +15,7 @@ Entity::~Entity()
     delete sprite;
     delete collider;
     delete body;
+    delete mind;
 }
 
 void Entity::set_position(uint x, uint y)
@@ -58,6 +60,15 @@ void Entity::attach_body(uint x, uint y, uint w, uint h)
     body = nullptr;
     body = new Body();
     body->set_position(x + w / 2, y + h / 2); // Center of gravity of entity
+}
+void Entity::attach_mind(Entity* ball)
+{
+    delete mind;
+    mind = nullptr;
+    if (ball != nullptr && body != nullptr)
+    {
+        mind = new AI(body, ball);
+    }
 }
 
 void Entity::draw(Renderer* render, uint x, uint y)
@@ -128,5 +139,33 @@ void Scoreboard::draw(Renderer* render)
     if (score < 10)
     {
         numbers[score]->draw(render);
+    }
+}
+
+// AI
+
+AI::AI(Body* body, Entity* ball)
+    :mybody(body),
+    ball(ball)
+{}
+
+void AI::act()
+{
+    bool do_something = (rand() % 100 <= 20);
+    if (do_something && ball != nullptr && mybody != nullptr)
+    {
+        uint ball_y = ball->get_y();
+        if (ball_y < mybody->get_y())
+        {
+            mybody->set_velocity(0, -4);
+        }
+        else if (ball_y > mybody->get_y())
+        {
+            mybody->set_velocity(0, 4);
+        }
+        else
+        {
+            mybody->set_velocity(0, 0);
+        }
     }
 }

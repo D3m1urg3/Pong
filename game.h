@@ -11,8 +11,8 @@
 
 const uint ball_init_x     = 50;      //pixels
 const uint ball_init_y     = 50;      //pixels
-const uint ball_init_vel_x = 3;      //pixels/update
-const uint ball_init_vel_y = 1;      //pixels/update
+const uint ball_init_vel_x = 3;       //pixels/update
+const uint ball_init_vel_y = 1;       //pixels/update
 const uint ball_sprite_x   = 73;      //pixels
 const uint ball_sprite_y   = 104;     //pixels
 const uint ball_sprite_w   = 4;       //pixels
@@ -46,7 +46,6 @@ public:
 
     bool init_ok();
     void update();
-    inline void draw_ball() { ball->draw(render, 20, 20); }
     inline Game_state get_state() const { return state; }
 private:
     Game_state state;

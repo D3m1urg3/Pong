@@ -11,6 +11,7 @@ void sleep(long ms);
 int main()
 {
     // Init
+    srand(time(NULL)); // seed for pseudorandom generator
     Game game;
 
     // Game loop
@@ -29,18 +30,6 @@ int main()
 }
 
 // Game loop functions 
-void input()
-{
-}
-
-void update()
-{
-}
-
-void render()
-{
-}
-
 long get_current_time()
 {
     SYSTEMTIME time;
