@@ -16,6 +16,7 @@ public:
     inline int get_velocity_x() const { return _vel_x; }
     inline int get_velocity_y() const { return _vel_y; }
 
+    inline void calculate_new_positions(uint& x, uint& y) { x = _x + _vel_x; y = _y + _vel_y; }
     void move(uint& x, uint& y);
 private:
     uint _x;

@@ -20,6 +20,7 @@ public:
     AI* mind;
 
     void set_position(uint x, uint y);
+    void set_max_positions(int x_min, int x_max, int y_min, int y_max);
     inline uint get_x() const { return _x; }
     inline uint get_y() const { return _y; }
     // Collisions
@@ -37,6 +38,12 @@ public:
 protected:
     uint _x;
     uint _y;
+    int _x_min;
+    int _x_max;
+    int _y_min;
+    int _y_max;
+
+    bool is_valid_position(uint x, uint y);
 };
 
 class Scoreboard
@@ -45,6 +52,7 @@ public:
     Scoreboard(Texture* spritesheet, uint x, uint y);
     ~Scoreboard();
     
+    inline uint get_score() { return score; }
     inline void raise() { ++score; }
     void draw(Renderer* render);
 private:

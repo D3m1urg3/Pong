@@ -4,6 +4,10 @@
 Entity::Entity(uint x, uint  y)
     :_x(x),
     _y(y),
+    _x_min(-1),
+    _x_max(-1),
+    _y_min(-1),
+    _y_max(-1),
     sprite(nullptr),
     collider(nullptr),
     body(nullptr),
@@ -30,6 +34,14 @@ void Entity::set_position(uint x, uint y)
     {
         body->set_position(x, y);
     }
+}
+
+void Entity::set_max_positions(int x_min, int x_max, int y_min, int y_max) 
+{ 
+    _x_min = x_min; 
+    _x_max = x_max; 
+    _y_min = y_min; 
+    _y_max = y_max; 
 }
 
 void Entity::extract_sprite(Texture* spritesheet, uint s_x, uint s_y, uint s_w, uint s_h)
@@ -89,14 +101,36 @@ void Entity::draw(Renderer* render)
     }
 }
 
+bool Entity::is_valid_position(uint x, uint y)
+{
+    bool valid_x = true;
+    if (_x_min >= 0 && _x_max >= 0)
+    {
+        valid_x = (_x_min <= x) && (x <= _x_max);
+    }
+    bool valid_y = true;
+    if (_y_min >= 0 && _y_max >= 0)
+    {
+        valid_y = (_y_min <= y) && (y <= _y_max);
+    }
+
+    return (valid_x && valid_y);
+}
+
 void Entity::move()
 {
     if (body != nullptr)
     {
-        body->move(_x, _y);
-        if (collider != nullptr)
+        uint x_new = _x;
+        uint y_new = _y;
+        body->calculate_new_positions(x_new, y_new);
+        if(is_valid_position(x_new, y_new))
         {
-            collider->set_position(_x, _y);
+            body->move(_x,_y);
+            if (collider != nullptr)
+            {
+                collider->set_position(_x, _y);
+            }
         }
     }
 }

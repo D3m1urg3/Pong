@@ -9,8 +9,7 @@ Body::Body()
 
 void Body::move(uint& x, uint& y)
 {
-    x = _x + _vel_x;
-    y = _y + _vel_y;
+    calculate_new_positions(x, y);
     _x = x;
     _y = y;
 }

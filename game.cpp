@@ -3,10 +3,16 @@
 Game::Game()
 {
     state = INITIALIZING;
+    // Graphics
     render = new Renderer("Pong", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT);
     spritesheet = new Texture(spritesheet_fullfilename);
     // Input
     input = new Input();
+    // Sounds
+    init_sound();
+    paddle_beep = new Sound(paddle_sound_fullfilename);
+    edge_beep = new Sound(edge_sound_fullfilename);
+    point_beep = new Sound(point_sound_fullfilename);
     // Backgound Sprites
     background = new Sprite(spritesheet, 0, 150, 20, 20);
     background->set_dst_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -20,12 +26,14 @@ Game::Game()
     ball->body->set_velocity(ball_init_vel_x, ball_init_vel_y);
     // Player
     player = new Entity(player_init_x, player_init_y);
+    player->set_max_positions(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
     player->extract_sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h);
     player->attach_body(player_init_x, player_init_y, paddle_sprite_w, paddle_sprite_h);
     player->attach_box_collider(player_init_x, player_init_y, paddle_sprite_w, paddle_sprite_h);
     player_scoreboard = new Scoreboard(spritesheet, 10, 10);
     // Opponent
     opponent = new Entity(opponent_init_x, opponent_init_y);
+    opponent->set_max_positions(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
     opponent->extract_sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h);
     opponent->attach_body(opponent_init_x, opponent_init_y, paddle_sprite_w, paddle_sprite_h);
     opponent->attach_box_collider(opponent_init_x, opponent_init_y, paddle_sprite_w, paddle_sprite_h);
@@ -48,6 +56,9 @@ Game::~Game()
 {
     delete render;
     delete input;
+    delete paddle_beep;
+    delete edge_beep;
+    delete point_beep;
     delete spritesheet;
     delete background;
     delete middle_line;
@@ -125,22 +136,32 @@ void Game::update_entities()
     int ball_vel_y = ball->body->get_velocity_y();
     if (ball->collider->is_colliding_with(player->collider) || ball->collider->is_colliding_with(opponent->collider) )
     {
+        paddle_beep->play();
         ball->body->set_velocity(-1 * ball_vel_x, ball_vel_y);
     }
     else if (ball->collider->is_colliding_with(edge_top->collider) || ball->collider->is_colliding_with(edge_bottom->collider))
     {
+        edge_beep->play();
         ball->body->set_velocity(ball_vel_x, -1 * ball_vel_y);
     }
     else if (ball->collider->is_colliding_with(edge_left->collider))
     {
+        point_beep->play();
         opponent_scoreboard->raise();
         ball->set_position(ball_init_x, ball_init_y);
     }
     else if (ball->collider->is_colliding_with(edge_right->collider))
     {
+        point_beep->play();
         player_scoreboard->raise();
         ball->set_position(ball_init_x, ball_init_y);
         ball->body->set_velocity( random_sign() * ball_init_vel_x, random_sign() * ball_init_vel_y );
+    }
+
+    // Check win conditions
+    if (player_scoreboard->get_score() == 9 || opponent_scoreboard->get_score() == 9)
+    {
+        state = FINISHED;
     }
 }
 
