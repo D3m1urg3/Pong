@@ -8,6 +8,7 @@
 
 class AI;
 
+
 class Entity 
 {
 public:
@@ -19,24 +20,17 @@ public:
     Body* body;
     AI* mind;
 
-    void set_position(uint x, uint y);
-    void set_max_positions(int x_min, int x_max, int y_min, int y_max);
+    bool attach(Sprite* sprt);
+    bool attach(Collider* col);
+    bool attach(Body* bdy);
+    bool attach(AI* brain);
+
+    void        set_position(uint x, uint y);
+    void        set_max_positions(int x_min, int x_max, int y_min, int y_max);
     inline uint get_x() const { return _x; }
     inline uint get_y() const { return _y; }
 
-    // Collisions
-    void attach_box_collider(uint x, uint y, uint w, uint h);
-    virtual void attach_edge_collider(const Edge_position& pos, uint scene_w, uint scene_h);
-
-    // Physics
-    bool attach(Body* bdy);
     void move();
-
-    // AI
-    bool attach(AI* brain);
-
-    // Sprites and render
-    bool attach(Sprite* sprt);
     void draw(Renderer* render);
     void draw(Renderer* render, uint x, uint y);
 

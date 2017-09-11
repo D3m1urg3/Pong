@@ -22,32 +22,32 @@ Game::Game()
     ball = new Entity(ball_init_x, ball_init_y);
     ball->attach(new Sprite(spritesheet, ball_sprite_x, ball_sprite_y, ball_sprite_w, ball_sprite_h));
     ball->attach(new Body( ball_init_x +  ball_sprite_w/2, ball_init_y +  ball_sprite_w/2, 0, 0 )); // Center of the entity
-    ball->attach_box_collider(ball_init_x, ball_init_y, ball_sprite_w, ball_sprite_h);
+    ball->attach(new Box_collider(ball_init_x, ball_init_y, ball_sprite_w, ball_sprite_h));
     ball->body->set_velocity(ball_init_vel_x, ball_init_vel_y);
     // Player
     player = new Entity(player_init_x, player_init_y);
     player->set_max_positions(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
     player->attach(new Sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h));
     player->attach(new Body( player_init_x +  paddle_sprite_w/2, player_init_y +  paddle_sprite_w/2, 0, 0 )); // Center of the entity
-    player->attach_box_collider(player_init_x, player_init_y, paddle_sprite_w, paddle_sprite_h);
+    player->attach(new Box_collider(player_init_x, player_init_y, paddle_sprite_w, paddle_sprite_h));
     player_scoreboard = new Scoreboard(spritesheet, 10, 10);
     // Opponent
     opponent = new Entity(opponent_init_x, opponent_init_y);
     opponent->set_max_positions(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
     opponent->attach(new Sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h));
     opponent->attach(new Body( opponent_init_x +  paddle_sprite_w/2, opponent_init_y +  paddle_sprite_w/2, 0, 0 )); // Center of the entity
-    opponent->attach_box_collider(opponent_init_x, opponent_init_y, paddle_sprite_w, paddle_sprite_h);
+    opponent->attach(new Box_collider(opponent_init_x, opponent_init_y, paddle_sprite_w, paddle_sprite_h));
     opponent->attach(new AI(opponent->body, ball));
     opponent_scoreboard = new Scoreboard(spritesheet, SCREEN_WIDTH - 26, 10); // 26 = 10 (margin) + 16 (tipical number size) 
     // Edges
     edge_top = new Entity(0, 0);
-    edge_top->attach_edge_collider(TOP, SCREEN_WIDTH, SCREEN_HEIGHT);
+    edge_top->attach(new Edge_collider(TOP, SCREEN_WIDTH, SCREEN_HEIGHT));
     edge_bottom = new Entity(0, SCREEN_HEIGHT);
-    edge_bottom->attach_edge_collider(BOTTOM, SCREEN_WIDTH, SCREEN_HEIGHT);
+    edge_bottom->attach(new Edge_collider(BOTTOM, SCREEN_WIDTH, SCREEN_HEIGHT));
     edge_left = new Entity(0, 0);
-    edge_left->attach_edge_collider(LEFT, SCREEN_WIDTH, SCREEN_HEIGHT);
+    edge_left->attach(new Edge_collider(LEFT, SCREEN_WIDTH, SCREEN_HEIGHT));
     edge_right = new Entity(SCREEN_WIDTH, 0);
-    edge_right->attach_edge_collider(RIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
+    edge_right->attach(new Edge_collider(RIGHT, SCREEN_WIDTH, SCREEN_HEIGHT));
 
     state = READY_TO_RUN;
 }

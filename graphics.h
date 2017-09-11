@@ -33,13 +33,15 @@ class Sprite
 public:
     Sprite(Texture* spritesheet_, int src_x, int src_y, int src_wx, int src_wy);
     ~Sprite();
+
     void                set_src_rect(int x, int y, int wx, int wy);
     void                set_dst_rect(int x, int y, int wx, int wy);
     inline SDL_Rect*    get_src_rect() const { return src; }
     inline SDL_Rect*    get_dst_rect() const { return dst; }
-    uint get_sprite_width() const;
-    uint get_sprite_height() const;
+    uint                get_sprite_width() const;
+    uint                get_sprite_height() const;
     Texture*            get_spritesheet() const { return spritesheet; }
+
     void                draw(Renderer* render);
 private:
     Texture* spritesheet;

@@ -15,7 +15,7 @@ class Collider
 public:
     Collider(Collider_type t) :type(t){};
     virtual ~Collider() {};
-
+    
     Collider_type get_type() const { return type; }
     virtual bool is_colliding_with(Collider*) = 0;
     virtual void set_position(uint x, uint y) = 0;

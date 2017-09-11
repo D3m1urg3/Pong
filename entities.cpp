@@ -55,6 +55,17 @@ bool Entity::attach(Sprite* sprt)
     return false;
 }
 
+bool Entity::attach(Collider* col)
+{
+    if (col != nullptr)
+    {
+        delete collider;
+        collider = col;
+        return true;
+    }
+    return false;
+}
+
 void Entity::set_position(uint x, uint y)
 {
     _x = x; 
@@ -75,20 +86,6 @@ void Entity::set_max_positions(int x_min, int x_max, int y_min, int y_max)
     _x_max = x_max; 
     _y_min = y_min; 
     _y_max = y_max; 
-}
-
-void Entity::attach_box_collider(uint x, uint y, uint w, uint h)
-{
-    delete collider;
-    collider = nullptr;
-    collider = new Box_collider(x, y, w, h);
-}
-
-void Entity::attach_edge_collider(const Edge_position& pos, uint scene_w, uint scene_h)
-{
-    delete collider;
-    collider = nullptr;
-    collider = new Edge_collider(pos, scene_w, scene_h);
 }
 
 void Entity::draw(Renderer* render, uint x, uint y)
