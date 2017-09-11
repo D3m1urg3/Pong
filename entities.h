@@ -23,18 +23,23 @@ public:
     void set_max_positions(int x_min, int x_max, int y_min, int y_max);
     inline uint get_x() const { return _x; }
     inline uint get_y() const { return _y; }
+
     // Collisions
     void attach_box_collider(uint x, uint y, uint w, uint h);
     virtual void attach_edge_collider(const Edge_position& pos, uint scene_w, uint scene_h);
+
     // Physics
     void attach_body(uint x, uint y, uint w, uint h);
     void move();
+
     // AI
-    void attach_mind(Entity* ball);
+    bool attach(AI* brain);
+
     // Sprites and render
     void extract_sprite(Texture* spritesheet, uint s_x, uint s_y, uint s_w, uint s_h);
     void draw(Renderer* render);
     void draw(Renderer* render, uint x, uint y);
+
 protected:
     uint _x;
     uint _y;

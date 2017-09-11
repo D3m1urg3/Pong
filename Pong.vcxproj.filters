@@ -44,14 +44,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="SDL2.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-    <Library Include="SDL2main.lib">
-      <Filter>Resource Files</Filter>
-    </Library>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,6 +70,17 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Library Include="SDL2.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+    <Library Include="SDL2main.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SDL2.dll">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="SDL2_mixer.dll">
       <Filter>Resource Files</Filter>
     </None>

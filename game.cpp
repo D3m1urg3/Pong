@@ -37,7 +37,7 @@ Game::Game()
     opponent->extract_sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h);
     opponent->attach_body(opponent_init_x, opponent_init_y, paddle_sprite_w, paddle_sprite_h);
     opponent->attach_box_collider(opponent_init_x, opponent_init_y, paddle_sprite_w, paddle_sprite_h);
-    opponent->attach_mind(ball);
+    opponent->attach(new AI(opponent->body, ball));
     opponent_scoreboard = new Scoreboard(spritesheet, SCREEN_WIDTH - 26, 10); // 26 = 10 (margin) + 16 (tipical number size) 
     // Edges
     edge_top = new Entity(0, 0);

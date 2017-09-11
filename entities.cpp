@@ -22,6 +22,17 @@ Entity::~Entity()
     delete mind;
 }
 
+bool Entity::attach(AI* brain)
+{
+    if (brain != nullptr)
+    {
+        delete mind;
+        mind = brain;
+        return true;
+    }
+    return false;
+}
+
 void Entity::set_position(uint x, uint y)
 {
     _x = x; 
@@ -72,15 +83,6 @@ void Entity::attach_body(uint x, uint y, uint w, uint h)
     body = nullptr;
     body = new Body();
     body->set_position(x + w / 2, y + h / 2); // Center of gravity of entity
-}
-void Entity::attach_mind(Entity* ball)
-{
-    delete mind;
-    mind = nullptr;
-    if (ball != nullptr && body != nullptr)
-    {
-        mind = new AI(body, ball);
-    }
 }
 
 void Entity::draw(Renderer* render, uint x, uint y)
@@ -177,7 +179,6 @@ void Scoreboard::draw(Renderer* render)
 }
 
 // AI
-
 AI::AI(Body* body, Entity* ball)
     :mybody(body),
     ball(ball)
