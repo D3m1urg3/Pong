@@ -36,7 +36,7 @@ public:
     bool attach(AI* brain);
 
     // Sprites and render
-    void extract_sprite(Texture* spritesheet, uint s_x, uint s_y, uint s_w, uint s_h);
+    bool attach(Sprite* sprt);
     void draw(Renderer* render);
     void draw(Renderer* render, uint x, uint y);
 

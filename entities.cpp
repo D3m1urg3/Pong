@@ -44,6 +44,17 @@ bool Entity::attach(Body* bdy)
     return false;
 }
 
+bool Entity::attach(Sprite* sprt)
+{
+    if (sprt != nullptr)
+    {
+        delete sprite;
+        sprite = sprt;
+        return true;
+    }
+    return false;
+}
+
 void Entity::set_position(uint x, uint y)
 {
     _x = x; 
@@ -64,14 +75,6 @@ void Entity::set_max_positions(int x_min, int x_max, int y_min, int y_max)
     _x_max = x_max; 
     _y_min = y_min; 
     _y_max = y_max; 
-}
-
-void Entity::extract_sprite(Texture* spritesheet, uint s_x, uint s_y, uint s_w, uint s_h)
-{
-    if (sprite == nullptr)
-    {
-        sprite = new Sprite(spritesheet, s_x, s_y, s_w, s_h);
-    }
 }
 
 void Entity::attach_box_collider(uint x, uint y, uint w, uint h)
@@ -161,7 +164,7 @@ Scoreboard::Scoreboard(Texture* spritesheet, uint x, uint y)
     for (int i = 0; i < 10; ++i)
     {
         numbers[i] = new Entity(x, y);
-        numbers[i]->extract_sprite(spritesheet, numbers_specs[i].x, numbers_specs[i].y, numbers_specs[i].w, numbers_specs[i].h);
+        numbers[i]->attach(new Sprite(spritesheet, numbers_specs[i].x, numbers_specs[i].y, numbers_specs[i].w, numbers_specs[i].h));
     }
 }
 
