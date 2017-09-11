@@ -29,7 +29,7 @@ public:
     virtual void attach_edge_collider(const Edge_position& pos, uint scene_w, uint scene_h);
 
     // Physics
-    void attach_body(uint x, uint y, uint w, uint h);
+    bool attach(Body* bdy);
     void move();
 
     // AI

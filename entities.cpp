@@ -33,6 +33,17 @@ bool Entity::attach(AI* brain)
     return false;
 }
 
+bool Entity::attach(Body* bdy)
+{
+    if (bdy != nullptr)
+    {
+        delete body;
+        body = bdy;
+        return true;
+    }
+    return false;
+}
+
 void Entity::set_position(uint x, uint y)
 {
     _x = x; 
@@ -75,14 +86,6 @@ void Entity::attach_edge_collider(const Edge_position& pos, uint scene_w, uint s
     delete collider;
     collider = nullptr;
     collider = new Edge_collider(pos, scene_w, scene_h);
-}
-
-void Entity::attach_body(uint x, uint y, uint w, uint h)
-{
-    delete body;
-    body = nullptr;
-    body = new Body();
-    body->set_position(x + w / 2, y + h / 2); // Center of gravity of entity
 }
 
 void Entity::draw(Renderer* render, uint x, uint y)

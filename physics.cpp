@@ -7,6 +7,13 @@ Body::Body()
     _vel_y(0)
 {}
 
+Body::Body(uint x, uint y, int v_x, int v_y) 
+    :_x(x),
+    _y(y),
+    _vel_x(v_x),
+    _vel_y(v_y)
+{}
+
 void Body::move(uint& x, uint& y)
 {
     calculate_new_positions(x, y);

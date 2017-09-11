@@ -7,6 +7,7 @@ class Body
 {
 public:
     Body();
+    Body(uint x, uint y, int v_x, int v_y);
     ~Body() {};
 
     inline void set_position(uint x, uint y) { _x = x; _y = y; }
