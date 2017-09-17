@@ -54,6 +54,8 @@ public:
     inline Game_state get_state() const { return state; }
 private:
     Game_state state;
+    News news;
+    Controls  control;
     Renderer* render;
     Input* input;
     Texture* spritesheet;
@@ -63,12 +65,12 @@ private:
     Sprite* background;
     Sprite* middle_line;
     Entity* ball;
-    Entity* player;
-    Entity* opponent;
-    Entity* edge_top;
-    Entity* edge_bottom;
-    Entity* edge_left;
-    Entity* edge_right;
+    Player* player;
+    Opponent* opponent;
+    Border* edge_top;
+    Border* edge_bottom;
+    Border* edge_left;
+    Border* edge_right;
     Scoreboard* player_scoreboard;
     Scoreboard* opponent_scoreboard;
 

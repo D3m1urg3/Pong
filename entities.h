@@ -4,37 +4,57 @@
 #include "graphics.h"
 #include "physics.h"
 #include "collision.h"
+#include "input.h"
+#include "newspaper.h"
 #include <vector>
+#include <algorithm>
 
 class AI;
 
+enum Entity_type
+{
+    PLAYER,
+    OPPONENT,
+    BALL,
+    SCOREBOARD,
+    BORDER
+};
 
 class Entity 
 {
 public:
-    Entity(uint x, uint  y);
+    Entity(uint x, uint  y, const Entity_type& type);
     virtual ~Entity();
 
     Sprite* sprite;
     Collider* collider;
     Body* body;
     AI* mind;
+    News* news;
 
     bool attach(Sprite* sprt);
     bool attach(Collider* col);
     bool attach(Body* bdy);
     bool attach(AI* brain);
+    bool attach(News* tabloid);
+
 
     void        set_position(uint x, uint y);
     void        set_max_positions(int x_min, int x_max, int y_min, int y_max);
     inline uint get_x() const { return _x; }
     inline uint get_y() const { return _y; }
+    Entity_type type() const { return _type; }
 
     void move();
     void draw(Renderer* render);
     void draw(Renderer* render, uint x, uint y);
 
+    virtual void update(){}
+
 protected:
+    static std::vector<Entity*> entities;
+
+    const Entity_type _type;
     uint _x;
     uint _y;
     int _x_min;
@@ -45,7 +65,57 @@ protected:
     bool is_valid_position(uint x, uint y);
 };
 
-class Scoreboard
+class Player : public Entity
+{
+public:
+    Player(uint x, uint y, uint v_x, uint v_y, Controls* ctrl);
+    ~Player();
+
+    void update();
+private:
+    Controls* control;
+    const uint paddle_vel_x;
+    const uint paddle_vel_y;
+};
+
+class Opponent : public Entity
+{
+public:
+    Opponent(uint x, uint y, uint v_x, uint v_y);
+    ~Opponent();
+
+    void update();
+private:
+    const uint paddle_vel_x;
+    const uint paddle_vel_y;
+};
+
+class Ball : public Entity
+{
+public:
+    Ball(uint x, uint y, uint v_x, uint v_y);
+    ~Ball();
+
+    void update();
+private:
+    const uint ball_init_pos_x;
+    const uint ball_init_pos_y;
+    const uint ball_init_vel_x;
+    const uint ball_init_vel_y;
+};
+
+class Border : public Entity
+{
+public:
+    Border(Edge_position pos, uint screen_w, uint screen_h);
+    ~Border();
+
+    inline Edge_position position() const { return _position; }
+private:
+    Edge_position _position;
+};
+
+class Scoreboard : public Entity
 {
 public:
     Scoreboard(Texture* spritesheet, uint x, uint y);
@@ -56,7 +126,7 @@ public:
     void draw(Renderer* render);
 private:
     uint score;
-    Entity* numbers[10];
+    Sprite* numbers[10];
 };
 
 class AI

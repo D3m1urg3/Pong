@@ -129,6 +129,7 @@
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="newspaper.cpp" />
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="sound.cpp" />
   </ItemGroup>
@@ -139,6 +140,7 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="newspaper.h" />
     <ClInclude Include="physics.h" />
     <ClInclude Include="sound.h" />
   </ItemGroup>
