@@ -2,10 +2,10 @@
 #define __ENTITIES__
 
 #include "graphics.h"
+#include "sound.h"
 #include "physics.h"
 #include "collision.h"
 #include "input.h"
-#include "newspaper.h"
 #include <vector>
 #include <algorithm>
 
@@ -24,26 +24,26 @@ class Entity
 {
 public:
     Entity(uint x, uint  y, const Entity_type& type);
+    Entity(uint x, uint  y, const Entity_type& type, char* tag);
     virtual ~Entity();
 
     Sprite* sprite;
     Collider* collider;
     Body* body;
     AI* mind;
-    News* news;
 
     bool attach(Sprite* sprt);
     bool attach(Collider* col);
     bool attach(Body* bdy);
     bool attach(AI* brain);
-    bool attach(News* tabloid);
-
 
     void        set_position(uint x, uint y);
     void        set_max_positions(int x_min, int x_max, int y_min, int y_max);
     inline uint get_x() const { return _x; }
     inline uint get_y() const { return _y; }
     Entity_type type() const { return _type; }
+    const char* id() const { return tag; }
+    Entity*     search_for_entity(char* identifier);
 
     void move();
     void draw(Renderer* render);
@@ -53,8 +53,9 @@ public:
 
 protected:
     static std::vector<Entity*> entities;
-
+    const char* tag;
     const Entity_type _type;
+
     uint _x;
     uint _y;
     int _x_min;
@@ -93,7 +94,7 @@ private:
 class Ball : public Entity
 {
 public:
-    Ball(uint x, uint y, uint v_x, uint v_y);
+    Ball(Texture* spritesheet, uint x, uint y, uint v_x, uint v_y, Sound* paddle, Sound* edge, Sound* score);
     ~Ball();
 
     void update();
@@ -102,6 +103,9 @@ private:
     const uint ball_init_pos_y;
     const uint ball_init_vel_x;
     const uint ball_init_vel_y;
+    Sound* paddle_beep;
+    Sound* edge_beep;
+    Sound* score_beep;
 };
 
 class Border : public Entity
@@ -118,7 +122,7 @@ private:
 class Scoreboard : public Entity
 {
 public:
-    Scoreboard(Texture* spritesheet, uint x, uint y);
+    Scoreboard(Texture* spritesheet, uint x, uint y, char* board_id);
     ~Scoreboard();
     
     inline uint get_score() { return score; }

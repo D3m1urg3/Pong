@@ -10,6 +10,7 @@ Input::~Input()
 
 Controls Input::check_for_input()
 {
+    SDL_PumpEvents();
     SDL_Event ev;
     Controls controls = NONE;
     while (SDL_PollEvent(&ev))

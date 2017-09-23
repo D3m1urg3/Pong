@@ -14,7 +14,25 @@ Entity::Entity(uint x, uint  y, const Entity_type& type)
     collider(nullptr),
     body(nullptr),
     mind(nullptr),
-    _type(type)
+    _type(type),
+    tag(nullptr)
+{
+    entities.push_back(this);
+}
+
+Entity::Entity(uint x, uint  y, const Entity_type& type, char* tag)
+    :_x(x),
+    _y(y),
+    _x_min(-1),
+    _x_max(-1),
+    _y_min(-1),
+    _y_max(-1),
+    sprite(nullptr),
+    collider(nullptr),
+    body(nullptr),
+    mind(nullptr),
+    _type(type),
+    tag(tag)
 {
     entities.push_back(this);
 }
@@ -74,17 +92,6 @@ bool Entity::attach(Collider* col)
     {
         delete collider;
         collider = col;
-        return true;
-    }
-    return false;
-}
-
-bool Entity::attach(News* tabloid)
-{
-    if (tabloid != nullptr)
-    {
-        delete news;
-        news = tabloid;
         return true;
     }
     return false;
@@ -164,9 +171,22 @@ void Entity::move()
     }
 }
 
+Entity* Entity::search_for_entity(char* identifier)
+{
+    for (std::vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
+    {
+        Entity* entity = *it;
+        if (entity != nullptr && entity->id() == identifier)
+        {
+            return entity;
+        }
+    }
+    return nullptr;
+}
+
 // Player
 Player::Player(uint x, uint y, uint v_x, uint v_y, Controls* ctrl)
-    :Entity(x,y, PLAYER),
+    :Entity(x,y, PLAYER, "player"),
     paddle_vel_x(v_x),
     paddle_vel_y(v_y)
 {
@@ -198,7 +218,7 @@ void Player::update()
 
 // Opponent
 Opponent::Opponent(uint x, uint y, uint v_x, uint v_y)
-    :Entity(x,y, OPPONENT),
+    :Entity(x,y, OPPONENT, "opponent"),
     paddle_vel_x(v_x),
     paddle_vel_y(v_y)
 {}
@@ -216,13 +236,23 @@ void Opponent::update()
 }
 
 // Ball
-Ball::Ball(uint x, uint y, uint v_x, uint v_y)
-    :Entity(x,y, BALL),
+Ball::Ball(Texture* spritesheet, uint x, uint y, uint v_x, uint v_y, Sound* paddle, Sound* edge, Sound* score)
+    :Entity(x,y, BALL, "ball"),
     ball_init_pos_x(x),
     ball_init_pos_y(y),
     ball_init_vel_x(v_x),
-    ball_init_vel_y(v_y)
+    ball_init_vel_y(v_y),
+    paddle_beep(paddle),
+    edge_beep(edge),
+    score_beep(score)
 {
+    if (spritesheet != nullptr)
+    {
+        attach(new Sprite(spritesheet, ball_sprite_x, ball_sprite_y, ball_sprite_w, ball_sprite_h));
+        attach(new Body( ball_init_x +  ball_sprite_w/2, ball_init_y +  ball_sprite_w/2, 0, 0 )); // Center of the entity
+        attach(new Box_collider(ball_init_x, ball_init_y, ball_sprite_w, ball_sprite_h));
+        body->set_velocity(ball_init_vel_x, ball_init_vel_y);
+    }
 }
 
 Ball::~Ball()
@@ -242,69 +272,103 @@ void Ball::update()
             switch (other->type())
             {
             case PLAYER:
+                // Physics
                 body->set_velocity(-1 * ball_vel_x, ball_vel_y);
+
+                // Sound
+                if (paddle_beep != nullptr)
+                {
+                    paddle_beep->play();
+                }
                 break;
             case OPPONENT:
+                // Physics
                 body->set_velocity(-1 * ball_vel_x, ball_vel_y);
+
+                // Sound
+                if (paddle_beep != nullptr)
+                {
+                    paddle_beep->play();
+                }
                 break;
             case BORDER:
                 Border* border = static_cast<Border*>(other);
                 switch (border->position())
                 {
                 case TOP:
+                    // Physics
                     body->set_velocity(ball_vel_x, -1 * ball_vel_y);
+
+                    // Sound
+                    if (edge_beep != nullptr)
+                    {
+                        edge_beep->play();
+                    }
                     break;
                 case BOTTOM:
+                    // Physics
                     body->set_velocity(ball_vel_x, -1 * ball_vel_y);
+
+                    // Sound
+                    if (edge_beep != nullptr)
+                    {
+                        edge_beep->play();
+                    }
                     break;
                 case LEFT:
-                    news->register_gossip(EV_OPPONENT_SCORED);
+                {
+                    // Physics
                     set_position(ball_init_pos_x, ball_init_pos_y);
                     body->set_velocity( random_sign() * ball_init_vel_x, random_sign() * ball_init_vel_y );
+
+                    // Score
+                    Scoreboard* opponent_scoreboard = static_cast<Scoreboard*>(search_for_entity("opponent_board"));
+                    if (opponent_scoreboard != nullptr)
+                    {
+                        opponent_scoreboard->raise();
+                    }
+
+                    // Sound
+                    if (score_beep != nullptr)
+                    {
+                        score_beep->play();
+                    }
+
+                }
                     break;
                 case RIGHT:
-                    news->register_gossip(EV_PLAYER_SCORED);
+                {
+                    // Physics
                     set_position(ball_init_pos_x, ball_init_pos_y);
                     body->set_velocity( random_sign() * ball_init_vel_x, random_sign() * ball_init_vel_y );
+
+                    // Score
+                    Scoreboard* player_scoreboard = static_cast<Scoreboard*>(search_for_entity("player_board"));
+                    if (player_scoreboard != nullptr)
+                    {
+                        player_scoreboard->raise();
+                    }
+
+                    //Sound
+                    if (score_beep != nullptr)
+                    {
+                        score_beep->play();
+                    }
+
+                }
                     break;
                 }
                 break;
             }
         }
     }
-    
-
-    /*
-    if (ball->collider->is_colliding_with(player->collider) || ball->collider->is_colliding_with(opponent->collider) )
-    {
-        paddle_beep->play();
-        ball->body->set_velocity(-1 * ball_vel_x, ball_vel_y);
-    }
-    else if (ball->collider->is_colliding_with(edge_top) || ball->collider->is_colliding_with(edge_bottom))
-    {
-        edge_beep->play();
-        ball->body->set_velocity(ball_vel_x, -1 * ball_vel_y);
-    }
-    else if (ball->collider->is_colliding_with(edge_left))
-    {
-        point_beep->play();
-        opponent_scoreboard->raise();
-        ball->set_position(ball_init_x, ball_init_y);
-    }
-    else if (ball->collider->is_colliding_with(edge_right))
-    {
-        point_beep->play();
-        player_scoreboard->raise();
-        ball->set_position(ball_init_x, ball_init_y);
-        ball->body->set_velocity( random_sign() * ball_init_vel_x, random_sign() * ball_init_vel_y );
-    }
     move();
-    */
 }
 
 // Border
 Border::Border(Edge_position pos, uint screen_w, uint screen_h)
-    :Entity(0, 0, BORDER)
+    :Entity(0, 0, BORDER),
+    _position(pos)
 {
     attach(new Edge_collider(pos, screen_w, screen_h));
 }
@@ -315,9 +379,9 @@ Border::~Border()
 }
 
 // Scoreboard
-Scoreboard::Scoreboard(Texture* spritesheet, uint x, uint y)
+Scoreboard::Scoreboard(Texture* spritesheet, uint x, uint y, char* board_id)
     :score(0),
-    Entity(x, y, SCOREBOARD)
+    Entity(x, y, SCOREBOARD, board_id)
 {
     SDL_Rect numbers_specs[10] =
     {   // {x,y,w,h}

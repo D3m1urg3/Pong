@@ -25,12 +25,7 @@ Game::Game()
     middle_line->set_dst_rect(96, 0, 1, SCREEN_HEIGHT);
 
     // Ball
-    ball = new Ball(ball_init_x, ball_init_y, ball_init_vel_x, ball_init_vel_y);
-    ball->attach(new Sprite(spritesheet, ball_sprite_x, ball_sprite_y, ball_sprite_w, ball_sprite_h));
-    ball->attach(new Body( ball_init_x +  ball_sprite_w/2, ball_init_y +  ball_sprite_w/2, 0, 0 )); // Center of the entity
-    ball->attach(new Box_collider(ball_init_x, ball_init_y, ball_sprite_w, ball_sprite_h));
-    ball->attach(&news);
-    ball->body->set_velocity(ball_init_vel_x, ball_init_vel_y);
+    ball = new Ball(spritesheet, ball_init_x, ball_init_y, ball_init_vel_x, ball_init_vel_y, paddle_beep, edge_beep, point_beep);
 
     // Player
     player = new Player(player_init_x, player_init_y, paddle_velocity_x, paddle_velocity_y, &control);
@@ -38,9 +33,7 @@ Game::Game()
     player->attach(new Sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h));
     player->attach(new Body( player_init_x +  paddle_sprite_w/2, player_init_y +  paddle_sprite_w/2, 0, 0 )); // Center of the entity
     player->attach(new Box_collider(player_init_x, player_init_y, paddle_sprite_w, paddle_sprite_h));
-    player->attach(&news);
-    player_scoreboard = new Scoreboard(spritesheet, 10, 10);
-    player_scoreboard->attach(&news);
+    player_scoreboard = new Scoreboard(spritesheet, 10, 10, "player_board");
 
     // Opponent
     opponent = new Opponent(opponent_init_x, opponent_init_y, paddle_velocity_x, paddle_velocity_y);
@@ -49,9 +42,7 @@ Game::Game()
     opponent->attach(new Body( opponent_init_x +  paddle_sprite_w/2, opponent_init_y +  paddle_sprite_w/2, 0, 0 )); // Center of the entity
     opponent->attach(new Box_collider(opponent_init_x, opponent_init_y, paddle_sprite_w, paddle_sprite_h));
     opponent->attach(new AI(opponent->body, ball));
-    opponent->attach(&news);
-    opponent_scoreboard = new Scoreboard(spritesheet, SCREEN_WIDTH - 26, 10); // 26 = 10 (margin) + 16 (tipical number size) 
-    opponent_scoreboard->attach(&news);
+    opponent_scoreboard = new Scoreboard(spritesheet, SCREEN_WIDTH - 26, 10, "opponent_board"); // 26 = 10 (margin) + 16 (tipical number size) 
 
     // Edges
     edge_top    = new Border(TOP, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -133,32 +124,7 @@ void Game::update_entities()
     opponent->update();
 
     // update ball
-    ball->move();
-    int ball_vel_x = ball->body->get_velocity_x();
-    int ball_vel_y = ball->body->get_velocity_y();
-    if (ball->collider->is_colliding_with(player->collider) || ball->collider->is_colliding_with(opponent->collider) )
-    {
-        paddle_beep->play();
-        ball->body->set_velocity(-1 * ball_vel_x, ball_vel_y);
-    }
-    else if (ball->collider->is_colliding_with(edge_top->collider) || ball->collider->is_colliding_with(edge_bottom->collider))
-    {
-        edge_beep->play();
-        ball->body->set_velocity(ball_vel_x, -1 * ball_vel_y);
-    }
-    else if (ball->collider->is_colliding_with(edge_left->collider))
-    {
-        point_beep->play();
-        opponent_scoreboard->raise();
-        ball->set_position(ball_init_x, ball_init_y);
-    }
-    else if (ball->collider->is_colliding_with(edge_right->collider))
-    {
-        point_beep->play();
-        player_scoreboard->raise();
-        ball->set_position(ball_init_x, ball_init_y);
-        ball->body->set_velocity( random_sign() * ball_init_vel_x, random_sign() * ball_init_vel_y );
-    }
+    ball->update();
 
     // Check win conditions
     if (player_scoreboard->get_score() == 9 || opponent_scoreboard->get_score() == 9)
