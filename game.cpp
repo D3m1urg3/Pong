@@ -24,24 +24,11 @@ Game::Game()
     middle_line = new Sprite(spritesheet, 186, 0, 1, SCREEN_HEIGHT);
     middle_line->set_dst_rect(96, 0, 1, SCREEN_HEIGHT);
 
-    // Ball
     ball = new Ball(spritesheet, ball_init_x, ball_init_y, ball_init_vel_x, ball_init_vel_y, paddle_beep, edge_beep, point_beep);
+    player = new Player(spritesheet, &control, player_init_x, player_init_y, paddle_velocity_x, paddle_velocity_y);
+    opponent = new Opponent(spritesheet, opponent_init_x, opponent_init_y, paddle_velocity_x, paddle_velocity_y);
 
-    // Player
-    player = new Player(player_init_x, player_init_y, paddle_velocity_x, paddle_velocity_y, &control);
-    player->set_max_positions(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
-    player->attach(new Sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h));
-    player->attach(new Body( player_init_x +  paddle_sprite_w/2, player_init_y +  paddle_sprite_w/2, 0, 0 )); // Center of the entity
-    player->attach(new Box_collider(player_init_x, player_init_y, paddle_sprite_w, paddle_sprite_h));
     player_scoreboard = new Scoreboard(spritesheet, 10, 10, "player_board");
-
-    // Opponent
-    opponent = new Opponent(opponent_init_x, opponent_init_y, paddle_velocity_x, paddle_velocity_y);
-    opponent->set_max_positions(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
-    opponent->attach(new Sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h));
-    opponent->attach(new Body( opponent_init_x +  paddle_sprite_w/2, opponent_init_y +  paddle_sprite_w/2, 0, 0 )); // Center of the entity
-    opponent->attach(new Box_collider(opponent_init_x, opponent_init_y, paddle_sprite_w, paddle_sprite_h));
-    opponent->attach(new AI(opponent->body, ball));
     opponent_scoreboard = new Scoreboard(spritesheet, SCREEN_WIDTH - 26, 10, "opponent_board"); // 26 = 10 (margin) + 16 (tipical number size) 
 
     // Edges

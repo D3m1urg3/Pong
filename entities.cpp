@@ -185,11 +185,17 @@ Entity* Entity::search_for_entity(char* identifier)
 }
 
 // Player
-Player::Player(uint x, uint y, uint v_x, uint v_y, Controls* ctrl)
+Player::Player(Texture* spritesheet, Controls* ctrl, uint x, uint y, uint v_x, uint v_y)
     :Entity(x,y, PLAYER, "player"),
     paddle_vel_x(v_x),
     paddle_vel_y(v_y)
 {
+    set_max_positions(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
+
+    attach(new Sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h));
+    attach(new Body( player_init_x +  paddle_sprite_w/2, player_init_y +  paddle_sprite_w/2, 0, 0 )); // Center of the entity
+    attach(new Box_collider(player_init_x, player_init_y, paddle_sprite_w, paddle_sprite_h));
+
     if (ctrl != nullptr)
     {
         control = ctrl;
@@ -217,11 +223,19 @@ void Player::update()
 }
 
 // Opponent
-Opponent::Opponent(uint x, uint y, uint v_x, uint v_y)
+Opponent::Opponent(Texture* spritesheet, uint x, uint y, uint v_x, uint v_y)
     :Entity(x,y, OPPONENT, "opponent"),
     paddle_vel_x(v_x),
     paddle_vel_y(v_y)
-{}
+{
+    set_max_positions(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT);
+    attach(new Sprite(spritesheet, paddle_sprite_x, paddle_sprite_y, paddle_sprite_w, paddle_sprite_h));
+    attach(new Body( opponent_init_x +  paddle_sprite_w/2, opponent_init_y +  paddle_sprite_w/2, 0, 0 )); // Center of the entity
+    attach(new Box_collider(opponent_init_x, opponent_init_y, paddle_sprite_w, paddle_sprite_h));
+
+    Entity* ball = search_for_entity("ball");
+    attach(new AI(body, ball));
+}
 
 Opponent::~Opponent()
 {}
@@ -430,6 +444,7 @@ void AI::act()
 {
     bool do_something = (rand() % 100 <= 20);
     int ball_position_error = rand() % 4 - 2;
+
     if (do_something && ball != nullptr && mybody != nullptr)
     {
         int ball_y = ball->get_y() + ball_position_error;

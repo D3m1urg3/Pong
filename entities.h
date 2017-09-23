@@ -69,7 +69,7 @@ protected:
 class Player : public Entity
 {
 public:
-    Player(uint x, uint y, uint v_x, uint v_y, Controls* ctrl);
+    Player(Texture* spritesheet, Controls* ctrl, uint x, uint y, uint v_x, uint v_y);
     ~Player();
 
     void update();
@@ -82,7 +82,7 @@ private:
 class Opponent : public Entity
 {
 public:
-    Opponent(uint x, uint y, uint v_x, uint v_y);
+    Opponent(Texture* spritesheet, uint x, uint y, uint v_x, uint v_y);
     ~Opponent();
 
     void update();
