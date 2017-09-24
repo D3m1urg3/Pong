@@ -296,7 +296,6 @@ void Ball::update()
                 {
                     paddle_beep->play();
                 }
-
             }
             else if (other_id == "opponent")
             {

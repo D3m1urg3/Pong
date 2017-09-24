@@ -66,8 +66,8 @@ bool Game::init_ok()
     bool input_ok = (input != nullptr);
     bool entities_ok = true;
 
-    Entity* entities[] = { player, ball, opponent };
-    for (int i = 0; i < 3; ++i)
+    Entity* entities[9] = { player, ball, opponent, edge_top, edge_bottom, edge_left, edge_right, player_scoreboard, opponent_scoreboard };
+    for (int i = 0; i < 9; ++i)
     {
         if (entities[i] == nullptr)
         {

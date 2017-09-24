@@ -28,16 +28,17 @@ public:
     bool attach(Body* bdy);
     bool attach(AI* brain);
 
-    void        set_position(uint x, uint y);
-    void        set_max_positions(int x_min, int x_max, int y_min, int y_max);
-    inline uint get_x() const { return _x; }
-    inline uint get_y() const { return _y; }
-    const std::string id() const { return tag; }
-    Entity*     search_for_entity(std::string identifier);
+    void                 set_position(uint x, uint y);
+    void                 set_max_positions(int x_min, int x_max, int y_min, int y_max);
+    inline uint          get_x() const { return _x; }
+    inline uint          get_y() const { return _y; }
+    std::vector<Entity*> get_entity_list() const { return entities; }
+    const std::string    id() const { return tag; }
 
-    void move();
-    void draw(Renderer* render);
-    void draw(Renderer* render, uint x, uint y);
+    Entity* search_for_entity(std::string identifier);
+    void    move();
+    void    draw(Renderer* render);
+    void    draw(Renderer* render, uint x, uint y);
 
     virtual void update(){}
 

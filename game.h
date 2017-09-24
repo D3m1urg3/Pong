@@ -35,7 +35,7 @@ private:
     Sound* point_beep;
     Sprite* background;
     Sprite* middle_line;
-    Entity* ball;
+    Ball* ball;
     Player* player;
     Opponent* opponent;
     Border* edge_top;
