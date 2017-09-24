@@ -11,20 +11,11 @@
 
 class AI;
 
-enum Entity_type
-{
-    PLAYER,
-    OPPONENT,
-    BALL,
-    SCOREBOARD,
-    BORDER
-};
-
 class Entity 
 {
 public:
-    Entity(uint x, uint  y, const Entity_type& type);
-    Entity(uint x, uint  y, const Entity_type& type, char* tag);
+    Entity(uint x, uint  y);
+    Entity(uint x, uint  y, std::string tag);
     virtual ~Entity();
 
     Sprite* sprite;
@@ -41,9 +32,8 @@ public:
     void        set_max_positions(int x_min, int x_max, int y_min, int y_max);
     inline uint get_x() const { return _x; }
     inline uint get_y() const { return _y; }
-    Entity_type type() const { return _type; }
-    const char* id() const { return tag; }
-    Entity*     search_for_entity(char* identifier);
+    const std::string id() const { return tag; }
+    Entity*     search_for_entity(std::string identifier);
 
     void move();
     void draw(Renderer* render);
@@ -53,8 +43,7 @@ public:
 
 protected:
     static std::vector<Entity*> entities;
-    const char* tag;
-    const Entity_type _type;
+    const std::string tag;
 
     uint _x;
     uint _y;
@@ -111,7 +100,7 @@ private:
 class Border : public Entity
 {
 public:
-    Border(Edge_position pos, uint screen_w, uint screen_h);
+    Border(Edge_position pos, uint screen_w, uint screen_h, std::string id);
     ~Border();
 
     inline Edge_position position() const { return _position; }
@@ -122,7 +111,7 @@ private:
 class Scoreboard : public Entity
 {
 public:
-    Scoreboard(Texture* spritesheet, uint x, uint y, char* board_id);
+    Scoreboard(Texture* spritesheet, uint x, uint y, std::string board_id);
     ~Scoreboard();
     
     inline uint get_score() { return score; }

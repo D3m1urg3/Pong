@@ -3,7 +3,7 @@
 // Entity
 std::vector<Entity*> Entity::entities;
 
-Entity::Entity(uint x, uint  y, const Entity_type& type)
+Entity::Entity(uint x, uint  y)
     :_x(x),
     _y(y),
     _x_min(-1),
@@ -14,13 +14,12 @@ Entity::Entity(uint x, uint  y, const Entity_type& type)
     collider(nullptr),
     body(nullptr),
     mind(nullptr),
-    _type(type),
     tag(nullptr)
 {
     entities.push_back(this);
 }
 
-Entity::Entity(uint x, uint  y, const Entity_type& type, char* tag)
+Entity::Entity(uint x, uint  y, std::string tag)
     :_x(x),
     _y(y),
     _x_min(-1),
@@ -31,7 +30,6 @@ Entity::Entity(uint x, uint  y, const Entity_type& type, char* tag)
     collider(nullptr),
     body(nullptr),
     mind(nullptr),
-    _type(type),
     tag(tag)
 {
     entities.push_back(this);
@@ -171,7 +169,7 @@ void Entity::move()
     }
 }
 
-Entity* Entity::search_for_entity(char* identifier)
+Entity* Entity::search_for_entity(std::string identifier)
 {
     for (std::vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
     {
@@ -186,7 +184,7 @@ Entity* Entity::search_for_entity(char* identifier)
 
 // Player
 Player::Player(Texture* spritesheet, Controls* ctrl, uint x, uint y, uint v_x, uint v_y)
-    :Entity(x,y, PLAYER, "player"),
+    :Entity(x,y, "player"),
     paddle_vel_x(v_x),
     paddle_vel_y(v_y)
 {
@@ -224,7 +222,7 @@ void Player::update()
 
 // Opponent
 Opponent::Opponent(Texture* spritesheet, uint x, uint y, uint v_x, uint v_y)
-    :Entity(x,y, OPPONENT, "opponent"),
+    :Entity(x,y, "opponent"),
     paddle_vel_x(v_x),
     paddle_vel_y(v_y)
 {
@@ -251,7 +249,7 @@ void Opponent::update()
 
 // Ball
 Ball::Ball(Texture* spritesheet, uint x, uint y, uint v_x, uint v_y, Sound* paddle, Sound* edge, Sound* score)
-    :Entity(x,y, BALL, "ball"),
+    :Entity(x,y, "ball"),
     ball_init_pos_x(x),
     ball_init_pos_y(y),
     ball_init_vel_x(v_x),
@@ -283,9 +281,25 @@ void Ball::update()
         Entity* other = *it;
         if (this->collider->is_colliding_with(other->collider))
         {
-            switch (other->type())
+            const std::string other_id = other->id();
+            if (other_id == "ball")
             {
-            case PLAYER:
+                continue;
+            }
+            else if (other_id == "player")
+            {
+                // Physics
+                body->set_velocity(-1 * ball_vel_x, ball_vel_y);
+
+                // Sound
+                if (paddle_beep != nullptr)
+                {
+                    paddle_beep->play();
+                }
+
+            }
+            else if (other_id == "opponent")
+            {
                 // Physics
                 body->set_velocity(-1 * ball_vel_x, ball_vel_y);
 
@@ -295,84 +309,47 @@ void Ball::update()
                     paddle_beep->play();
                 }
                 break;
-            case OPPONENT:
+
+            }
+            else if (other_id == "top_border" || other_id == "bottom_border")
+            {
                 // Physics
-                body->set_velocity(-1 * ball_vel_x, ball_vel_y);
+                body->set_velocity(ball_vel_x, -1 * ball_vel_y);
 
                 // Sound
-                if (paddle_beep != nullptr)
+                if (edge_beep != nullptr)
                 {
-                    paddle_beep->play();
+                    edge_beep->play();
                 }
-                break;
-            case BORDER:
-                Border* border = static_cast<Border*>(other);
-                switch (border->position())
+            }
+            else if (other_id == "left_border" || other_id == "right_border")
+            {
+                // Physics
+                set_position(ball_init_pos_x, ball_init_pos_y);
+                body->set_velocity(random_sign() * ball_init_vel_x, random_sign() * ball_init_vel_y);
+
+                // Score
+                std::string score_board_id;
+                if (other_id == "left_border")
                 {
-                case TOP:
-                    // Physics
-                    body->set_velocity(ball_vel_x, -1 * ball_vel_y);
-
-                    // Sound
-                    if (edge_beep != nullptr)
-                    {
-                        edge_beep->play();
-                    }
-                    break;
-                case BOTTOM:
-                    // Physics
-                    body->set_velocity(ball_vel_x, -1 * ball_vel_y);
-
-                    // Sound
-                    if (edge_beep != nullptr)
-                    {
-                        edge_beep->play();
-                    }
-                    break;
-                case LEFT:
+                    score_board_id = "opponent_scoreboard";
+                }
+                else if (other_id == "right_border")
                 {
-                    // Physics
-                    set_position(ball_init_pos_x, ball_init_pos_y);
-                    body->set_velocity( random_sign() * ball_init_vel_x, random_sign() * ball_init_vel_y );
-
-                    // Score
-                    Scoreboard* opponent_scoreboard = static_cast<Scoreboard*>(search_for_entity("opponent_board"));
-                    if (opponent_scoreboard != nullptr)
-                    {
-                        opponent_scoreboard->raise();
-                    }
-
-                    // Sound
-                    if (score_beep != nullptr)
-                    {
-                        score_beep->play();
-                    }
-
+                    score_board_id = "player_scoreboard";
                 }
-                    break;
-                case RIGHT:
+
+                Scoreboard* scoreboard = static_cast<Scoreboard*>(search_for_entity(score_board_id));
+                if (scoreboard != nullptr)
                 {
-                    // Physics
-                    set_position(ball_init_pos_x, ball_init_pos_y);
-                    body->set_velocity( random_sign() * ball_init_vel_x, random_sign() * ball_init_vel_y );
-
-                    // Score
-                    Scoreboard* player_scoreboard = static_cast<Scoreboard*>(search_for_entity("player_board"));
-                    if (player_scoreboard != nullptr)
-                    {
-                        player_scoreboard->raise();
-                    }
-
-                    //Sound
-                    if (score_beep != nullptr)
-                    {
-                        score_beep->play();
-                    }
-
+                    scoreboard->raise();
                 }
-                    break;
+
+                // Sound
+                if (score_beep != nullptr)
+                {
+                    score_beep->play();
                 }
-                break;
             }
         }
     }
@@ -380,8 +357,8 @@ void Ball::update()
 }
 
 // Border
-Border::Border(Edge_position pos, uint screen_w, uint screen_h)
-    :Entity(0, 0, BORDER),
+Border::Border(Edge_position pos, uint screen_w, uint screen_h, std::string id)
+    :Entity(0, 0, id),
     _position(pos)
 {
     attach(new Edge_collider(pos, screen_w, screen_h));
@@ -393,9 +370,9 @@ Border::~Border()
 }
 
 // Scoreboard
-Scoreboard::Scoreboard(Texture* spritesheet, uint x, uint y, char* board_id)
+Scoreboard::Scoreboard(Texture* spritesheet, uint x, uint y, std::string board_id)
     :score(0),
-    Entity(x, y, SCOREBOARD, board_id)
+    Entity(x, y, board_id)
 {
     SDL_Rect numbers_specs[10] =
     {   // {x,y,w,h}

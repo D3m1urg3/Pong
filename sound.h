@@ -2,13 +2,14 @@
 #define __SOUND__
 
 #include "SDL_mixer.h"
+#include "globals.h"
 
 bool init_sound();
 
 class Sound
 {
 public:
-    Sound(const char* wav_fullfilename);
+    Sound(std::string wav_fullfilename);
     ~Sound();
 
     void play();

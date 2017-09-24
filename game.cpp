@@ -5,37 +5,37 @@ Game::Game()
     state = INITIALIZING;
 
     // Graphics
-    render = new Renderer("Pong", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT);
+    render      = new Renderer("Pong", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT);
     spritesheet = new Texture(spritesheet_fullfilename);
 
     // Input
-    input = new Input();
+    input   = new Input();
     control = NONE;
 
     // Sounds
     init_sound();
     paddle_beep = new Sound(paddle_sound_fullfilename);
-    edge_beep = new Sound(edge_sound_fullfilename);
-    point_beep = new Sound(point_sound_fullfilename);
+    edge_beep   = new Sound(edge_sound_fullfilename);
+    point_beep  = new Sound(point_sound_fullfilename);
 
     // Backgound Sprites
-    background = new Sprite(spritesheet, 0, 150, 20, 20);
+    background  = new Sprite(spritesheet, 0, 150, 20, 20);
     background->set_dst_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     middle_line = new Sprite(spritesheet, 186, 0, 1, SCREEN_HEIGHT);
     middle_line->set_dst_rect(96, 0, 1, SCREEN_HEIGHT);
 
-    ball = new Ball(spritesheet, ball_init_x, ball_init_y, ball_init_vel_x, ball_init_vel_y, paddle_beep, edge_beep, point_beep);
-    player = new Player(spritesheet, &control, player_init_x, player_init_y, paddle_velocity_x, paddle_velocity_y);
-    opponent = new Opponent(spritesheet, opponent_init_x, opponent_init_y, paddle_velocity_x, paddle_velocity_y);
-
-    player_scoreboard = new Scoreboard(spritesheet, 10, 10, "player_board");
-    opponent_scoreboard = new Scoreboard(spritesheet, SCREEN_WIDTH - 26, 10, "opponent_board"); // 26 = 10 (margin) + 16 (tipical number size) 
+    // Entities
+    ball                = new Ball(spritesheet, ball_init_x, ball_init_y, ball_init_vel_x, ball_init_vel_y, paddle_beep, edge_beep, point_beep);
+    player              = new Player(spritesheet, &control, player_init_x, player_init_y, paddle_velocity_x, paddle_velocity_y);
+    opponent            = new Opponent(spritesheet, opponent_init_x, opponent_init_y, paddle_velocity_x, paddle_velocity_y);
+    player_scoreboard   = new Scoreboard(spritesheet, 10, 10, "player_scoreboard");
+    opponent_scoreboard = new Scoreboard(spritesheet, SCREEN_WIDTH - 26, 10, "opponent_scoreboard"); // 26 = 10 (margin) + 16 (tipical number size) 
 
     // Edges
-    edge_top    = new Border(TOP, SCREEN_WIDTH, SCREEN_HEIGHT);
-    edge_bottom = new Border(BOTTOM, SCREEN_WIDTH, SCREEN_HEIGHT);
-    edge_left   = new Border(LEFT, SCREEN_WIDTH, SCREEN_HEIGHT);
-    edge_right  = new Border(RIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
+    edge_top    = new Border(TOP, SCREEN_WIDTH, SCREEN_HEIGHT, "top_border");
+    edge_bottom = new Border(BOTTOM, SCREEN_WIDTH, SCREEN_HEIGHT, "bottom_border");
+    edge_left   = new Border(LEFT, SCREEN_WIDTH, SCREEN_HEIGHT, "left_border");
+    edge_right  = new Border(RIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, "right_border");
 
     state = READY_TO_RUN;
 }
@@ -65,6 +65,7 @@ bool Game::init_ok()
     bool background_ok = (background != nullptr) && (middle_line != nullptr);
     bool input_ok = (input != nullptr);
     bool entities_ok = true;
+
     Entity* entities[] = { player, ball, opponent };
     for (int i = 0; i < 3; ++i)
     {
@@ -74,6 +75,7 @@ bool Game::init_ok()
             break;
         }
     }
+
     return ready_to_run && render_ok && spritesheet_ok && background_ok && input_ok && entities_ok;
 }
 

@@ -9,13 +9,10 @@ bool init_sound()
     return true;
 }
 
-Sound::Sound(const char* wav_fullfilename)
+Sound::Sound(std::string wav_fullfilename)
     :sound(nullptr)
 {
-    if (wav_fullfilename != nullptr)
-    {
-        sound = Mix_LoadWAV(wav_fullfilename);
-    }
+    sound = Mix_LoadWAV(wav_fullfilename.c_str());
 }
 
 Sound::~Sound()
