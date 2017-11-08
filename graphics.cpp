@@ -59,6 +59,8 @@ void Texture::set_sdl_surface(SDL_Surface* surface)
 }
 
 // Sprite
+const Component_types Sprite::ctype = SPRITE;
+
 Sprite::Sprite(Texture* spritesheet_, int src_x, int src_y, int src_wx, int src_wy)
     :spritesheet(nullptr)
 {

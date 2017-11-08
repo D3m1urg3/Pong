@@ -1,4 +1,4 @@
-// Pong Clon - Yonatan Calderon 2017
+// Pong - Yonatan Calderon 2017
 
 #include "game.h"
 #include "globals.h"
@@ -8,7 +8,7 @@
 long get_current_time();
 void sleep(long ms);
 
-int main()
+int main(int argc, char **argv)
 {
     // Init
     srand(time(NULL)); 
@@ -40,7 +40,9 @@ long get_current_time()
 
 void sleep(long ms)
 {
-    Sleep(ms);
+    SDL_PumpEvents();
+    SDL_Delay(ms);
+    //Sleep(ms); old code. Had to use SDL functions to avoid freezing
 }
 
 

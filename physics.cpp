@@ -1,5 +1,7 @@
 #include "physics.h"
 
+const Component_types Body::ctype = BODY;
+
 Body::Body()
     :_x(0),
     _y(0),

@@ -1,5 +1,7 @@
 #include "collision.h"
 
+const Component_types Collider::ctype = COLLIDER;
+
 // Box
 Box_collider::Box_collider(uint x, uint y, uint w, uint h)
     :Collider(BOX)

@@ -33,7 +33,6 @@ void News::register_gossip(const Possible_event& gossip)
             if (i < amount_of_events)
             {
                 events[i] = temp_storage[i];
-
             }
             else
             {

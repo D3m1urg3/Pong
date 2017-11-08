@@ -2,7 +2,7 @@
 #define __GRAPHICS__
 
 #include "SDL.h"
-#undef main // For some reason SDL defines a main somewhere.
+// #undef main // For some reason SDL defines a main somewhere.
 #include "globals.h"
 #include <queue>
 #include <vector>
@@ -41,9 +41,11 @@ public:
     uint                get_sprite_width() const;
     uint                get_sprite_height() const;
     Texture*            get_spritesheet() const { return spritesheet; }
+    Component_types     component_type() const { return ctype; }
 
     void                draw(Renderer* render);
 private:
+    static const Component_types ctype;
     Texture* spritesheet;
     SDL_Rect* src;
     SDL_Rect* dst;

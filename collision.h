@@ -20,6 +20,7 @@ public:
     virtual bool is_colliding_with(Collider*) = 0;
     virtual void set_position(uint x, uint y) = 0;
 protected:
+    static const Component_types ctype;
     Collider_type type;
 };
 

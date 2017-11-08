@@ -15,6 +15,14 @@ int random_sign();
 #define SCREEN_WIDTH 192 // pixels
 #define SCREEN_HEIGHT 242 // pixels
 
+enum Component_types
+{
+    SPRITE,
+    COLLIDER,
+    BODY,
+    MIND
+};
+
 const uint ball_init_x     = SCREEN_WIDTH/2;  //pixels
 const uint ball_init_y     = SCREEN_HEIGHT/2; //pixels
 const uint ball_init_vel_x = 3;               //pixels/update

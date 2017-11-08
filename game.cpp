@@ -86,24 +86,18 @@ void Game::update()
     draw();
 }
 
-void Game::draw_background()
-{
-    background->draw(render);
-    middle_line->draw(render);
-}
-
 void Game::update_entities()
 {
-    // Input 
-    if (input != nullptr)
-    {
-        control = input->check_for_input();
-    }
-
     // Check for quit
     if (control == END)
     {
         state = FINISHED;
+    }
+
+    // Input 
+    if (input != nullptr)
+    {
+        control = input->check_for_input();
     }
 
     // Update player

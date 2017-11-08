@@ -275,7 +275,6 @@ void Ball::update()
     int ball_vel_x = body->get_velocity_x();
     int ball_vel_y = body->get_velocity_y();
 
-    std::vector<Entity*>::iterator it;
     for (std::vector<Entity*>::iterator it = entities.begin(); it != entities.end(); ++it)
     {
         Entity* other = *it;

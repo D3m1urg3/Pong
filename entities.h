@@ -129,8 +129,10 @@ public:
     AI(Body* body, Entity* ball);
     ~AI() {}
 
+    Component_types component_type() const { return ctype; }
     void act();
 private:
+    static const Component_types ctype;
     Body* mybody;
     const Entity* ball;
 };

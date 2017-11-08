@@ -47,8 +47,6 @@ private:
 
     void update_entities();
     void draw();
-
-    void draw_background();
 };
 
 #endif 
