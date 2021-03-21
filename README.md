@@ -3,4 +3,6 @@ Pong!
 
 A simple version of pong! for fun and giggles.
 
-It uses SDL2 for input and graphics and SDL_mixer for sound.
+* Developed in Visual Studio 2015.
+* Using SDL2 for graphics and input.
+* Using SDL_mixer for sound.
