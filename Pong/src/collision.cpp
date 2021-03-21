@@ -29,8 +29,7 @@ bool Box_collider::is_colliding_with(Collider* other)
             if (other_rect != nullptr)
             {
                 SDL_Rect intersection;
-                bool retval = SDL_IntersectRect(rect, other_rect, &intersection);
-                return retval;
+                return SDL_IntersectRect(rect, other_rect, &intersection) == SDL_TRUE;
             }
         }
         else if (other->get_type() == EDGE)
@@ -81,13 +80,13 @@ bool Edge_collider::is_colliding_with(Collider* other)
                     retval = (other_rect->y < 0);
                     break;
                 case BOTTOM:
-                    retval = (other_rect->y > location);
+                    retval = (other_rect->y > (int)location);
                     break;
                 case LEFT:
                     retval = (other_rect->x < 0);
                     break;
                 case RIGHT:
-                    retval = (other_rect->x > location);
+                    retval = (other_rect->x > (int)location);
                     break;
                 }
             }

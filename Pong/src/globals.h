@@ -42,9 +42,9 @@ const uint player_init_y = (SCREEN_HEIGHT-paddle_sprite_h)/2;
 const uint opponent_init_x = SCREEN_WIDTH - 4;
 const uint opponent_init_y = player_init_y;
 
-const char spritesheet_fullfilename[] = "Resources/sprites.bmp";
-const char paddle_sound_fullfilename[] = "Resources/paddle.wav";
-const char edge_sound_fullfilename[] = "Resources/edge.wav";
-const char point_sound_fullfilename[] = "Resources/point.wav";
+const char spritesheet_fullfilename[]  = "../Dependencies/Resources/sprites.bmp";
+const char paddle_sound_fullfilename[] = "../Dependencies/Resources/paddle.wav";
+const char edge_sound_fullfilename[]   = "../Dependencies/Resources/edge.wav";
+const char point_sound_fullfilename[]  = "../Dependencies/Resources/point.wav";
 
 #endif
