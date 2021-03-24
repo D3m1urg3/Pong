@@ -10,7 +10,7 @@ Input::~Input()
 {
 }
 
-Controls Input::check_for_input()
+Controls Input::get_keyboard_input()
 {
     SDL_Event ev;
     Controls controls = NONE;

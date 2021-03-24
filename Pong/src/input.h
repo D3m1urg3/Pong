@@ -14,7 +14,7 @@ class Input
 public:
     Input();
     ~Input();
-    Controls check_for_input();
+    Controls get_keyboard_input();
 };
 
 #endif

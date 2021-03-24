@@ -97,7 +97,7 @@ void Game::update_entities()
     // Input 
     if (input != nullptr)
     {
-        control = input->check_for_input();
+        control = input->get_keyboard_input();
     }
 
     // Update player
