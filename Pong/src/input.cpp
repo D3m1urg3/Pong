@@ -1,4 +1,6 @@
 #include "input.h"
+#include "SDL.h"
+#include "log.h"
 
 Input::Input()
 {

@@ -1,8 +1,6 @@
 #ifndef __INPUT__
 #define __INPUT__
 
-#include "SDL.h"
-
 enum Controls
 {
     NONE,
