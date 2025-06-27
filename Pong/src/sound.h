@@ -1,7 +1,7 @@
 #ifndef __SOUND__
 #define __SOUND__
 
-#include "SDL_mixer.h"
+#include "SDL/SDL_mixer.h"
 #include "globals.h"
 
 bool init_sound();

@@ -2,6 +2,7 @@
 
 #include "game.h"
 #include "globals.h"
+#include <chrono>
 
 #define MS_PER_FRAME 33 // 30 fps
 
@@ -19,6 +20,7 @@ int main(int argc, char **argv)
     {
         while (game.get_state() != FINISHED)
         {
+            auto now = std::chrono::system_clock::now();
             long start_time = get_current_time();
             game.update();
             sleep(start_time + MS_PER_FRAME - get_current_time());
@@ -29,14 +31,19 @@ int main(int argc, char **argv)
 }
 
 // Game loop functions 
-long get_current_time()
-{
-    SYSTEMTIME time;
-    GetSystemTime(&time);
-    LONG time_ms = (time.wSecond * 1000) + time.wMilliseconds;
-
-    return time_ms;
+long get_current_time() {
+    return 1;
 }
+// long get_current_time()
+// {
+//     SYSTEMTIME time;
+//     GetSystemTime(&time);
+//     LONG time_ms = (time.wSecond * 1000) + time.wMilliseconds;
+// 
+//     return time_ms;
+// }
+
+
 
 void sleep(long ms)
 {

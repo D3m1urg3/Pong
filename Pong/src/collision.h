@@ -1,7 +1,7 @@
 #ifndef __COLLISION__
 #define __COLLISION__
 
-#include "SDL.h"
+#include "SDL/SDL.h"
 #include "globals.h"
 
 enum Collider_type

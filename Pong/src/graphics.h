@@ -1,7 +1,7 @@
 #ifndef __GRAPHICS__
 #define __GRAPHICS__
 
-#include "SDL.h"
+#include "SDL/SDL.h"
 // #undef main // For some reason SDL defines a main somewhere.
 #include "globals.h"
 #include <queue>

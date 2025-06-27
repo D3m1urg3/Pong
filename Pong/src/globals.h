@@ -3,7 +3,6 @@
 
 #include <new>
 #include <iostream>
-#include <windows.h>
 #include <cstdlib>
 #include <time.h>
 #include <string>
